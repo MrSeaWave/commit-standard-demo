@@ -247,7 +247,64 @@ module.exports = {
 }
 ```
 
+## standard-version
+
+以上配置已经可以满足提交代码的常规要求，但是如果我们想自动生成 `CHANGELOG`，语义化我们的版本[（Semantic Versioning）](https://semver.org/lang/zh-CN/)。 就需要借助 `standard-version`
+
+`standard-version`的作用就是生成 `changelog` 更新 `package.json` 和 `package.lock.json` 中的 `version` 字段。
+关于版本
+
+```
+// 版本
+major：主版本号，不兼容的API修改
+minor：次版本号，向下兼容，功能性增加
+patch：修订号，向下兼容，bug fixed
+
+// 版本发布进度
+alpha（内测）
+beta（公测）
+rc （正式版本的候选版本）  Release Candiate
+
+// npm 发布指令
+升级补丁版本号：npm version patch。
+升级小版本号：npm version minor。
+升级大版本号：npm version major。
+```
+
+关于`release:`
+
+```
+// 发布首个版本
+npm run release -- --first-release
+
+// 发布预发布版本
+// 例如：v1.0.0 -> v1.0.0-0
+npm run release -- --prerelease
+
+// 发布与首个 alpha 版本
+// 例如：v1.0.0 -> 1.0.1-alpha.0
+npm run release -- --prerelease alpha
+
+// 发布 major、minor、patch 版本
+npm run release -- --release-as minor
+```
+
+```bash
+$ yarn add standard-version -D
+```
+
+配置`package.json`
+
+```json
+{
+  "script": {
+    "release": "standard-version"
+  }
+}
+```
+
 ## 参考链接
 
 - [从 Commit 规范化到发布自定义 CHANGELOG 模版](https://juejin.im/post/6844903888072654856#heading-3)
 - [优雅的提交你的 Git Commit Message](https://juejin.im/post/6844903606815064077#heading-3)
+- [如何配置 Git Commit Message](https://zhuanlan.zhihu.com/p/69635847)
