@@ -6,6 +6,10 @@
 
 用 `husky` 来管理 `git commit` 之前的操作，为什么要这么做，因为我们可以在 `git commit` 之前再校验一次代码，防止提交「脏」代码，保证代码库中的代码是「干净」的，`husky` 不仅仅能管理 `commit`，`git` 的钩子几乎都能管理，不过用的最多的还是 `commit` 和 `push`
 
+```bash
+$ yarn add husky -D
+```
+
 在`package.json`中配置
 
 ```json
@@ -24,6 +28,7 @@
 导致的问题就是：每次提交代码，无论改动多少，都会检查整个项目下的文件，当项目大了之后，检查速度也会变得越来越慢
 
 > 注：因为 pre-commit 这个钩子是需要配合 git 去用的，它主要对文件夹 .git/hooks/pre-commit 文件做手脚，当我们从 git 上拉下来项目时，如果之前没对 hooks 下的文件做修改，那 hooks 下的文件都是以 sample 结尾的，这个时候钩子函数是不起作用的，当我们安装了 husky 之后，husky 会自动对 hooks 下面的文件做修改，当你安装完 husky 之后，再打开 .git/hooks 文件夹，你会发现所有的钩子文件，都会存在一份带有.sample 的，一份不带.sample 的，不带.sample 的文件就是 husky 创建的，这个才会让 git 钩子起作用。所以我们最好是先拉项目，然后再安装 husky，否则可能会导致 husky 失效。如果你是新开发项目，开发完后才提交到 git，开发完之后，你可以先关联 git 仓库，然后重新安装一下 husky 这个包就可以了
+
 > 注：如果在`sourcetree`直接跳过`husky`钩子，
 > 执行 commit 后可以看到对应的`shell log`提示`Can‘t find npx in path ....`
 > 在路径中添加`yarn`的位置
@@ -41,7 +46,11 @@ export PATH=/usr/local/bin:$PATH
 
 ## lint-staged
 
-解决上面的痛点就需要使用 lint-staged。它只会校验你提交或者说你修改的部分内容。
+解决上面的痛点就需要使用 `lint-staged`。它只会校验你提交或者说你修改的部分内容。
+
+```bash
+yarn add lint-staged -D
+```
 
 修改`package.json` 配置
 
@@ -63,7 +72,7 @@ export PATH=/usr/local/bin:$PATH
 ## Commit 提交规范检查
 
 在多人协作项目中，如果代码风格统一、代码提交信息的说明准确，在后期维护以及 `Bug` 处理时会更加方便。
-`Git` 每次提交代码，都要写 `Commit message`（提交说明）
+`Git` 每次提交代码，都要写 [`Commit message`（提交说明）](./CommitMessage.md)
 
 但是每个人的提交方式不同，没有很特别的指定哪些 `commit` 是新功能，哪些是修复 `bug`，这时需要插件来帮我们规范化
 
