@@ -45,3 +45,109 @@
 ```
 
 如上配置，每次它只会在你本地 `commit` 之前，校验你提交的内容是否符合你本地配置的 `eslint` 规则，如果符合规则，则会提交成功。如果不符合它会自动执行 `eslint --fix` 尝试帮你自动修复，如果修复成功则会帮你把修复好的代码提交，如果失败，则会提示你错误，让你修好这个错误之后才能允许你提交代码。
+
+## Commit 提交规范检查
+
+在多人协作项目中，如果代码风格统一、代码提交信息的说明准确，在后期维护以及 `Bug` 处理时会更加方便。
+`Git` 每次提交代码，都要写 `Commit message`（提交说明）
+
+但是每个人的提交方式不同，没有很特别的指定哪些 `commit` 是新功能，哪些是修复 `bug`，这时需要插件来帮我们规范化
+
+规范 `Commit message` 的作用
+
+- 提供更多的历史信息，方便快速浏览
+- 过滤某些 `commit`（比如文档改动），便于快速查找信息
+- 直接从 `commit` 生成 `CHANGELOG`
+- 可读性好，清晰，不必深入看代码即可了解当前 `commit` 的作用。
+- 为 `Code Review`（代码审查）做准备
+- 方便跟踪工程历史
+
+```bash
+$ yarn add commitizen cz-conventional-changelog -D
+```
+
+- `commitizen/cz-cli`: 我们需要借助它提供的 `git cz` 命令替代我们的 `git commit` 命令, 帮助我们生成符合规范的 `commit message`.
+- `cz-conventional-changelog`:为`commitizen` 指定一个 `Adapter`，使得 `commitizen` 按照我们指定的规范帮助我们生成 `commit message`.
+
+配置`package.json`
+
+```json
+{
+  "scripts": {
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
+```
+
+**自定义 adapter**
+
+- `cz-customizable`: 可自定义的`Commitizen`插件。比如：默认的提交 `types` 可能特别多，有些时候我们可能只需要其中的某些 `type`，或者自定义`type`
+
+```bash
+$ yarn add cz-customizable -D
+```
+
+配置 `package.json`
+
+```json
+{
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  }
+}
+```
+
+在根目录下，配置 `.cz-config.js`
+
+```js
+module.exports = {
+  types: [
+    {
+      value: "feat",
+      name: "feat:     A new feature"
+    },
+    {
+      value: "fix",
+      name: "fix:      A bug fix"
+    },
+    {
+      value: "docs",
+      name: "docs:     Documentation only changes"
+    },
+    {
+      value: "refactor",
+      name:
+        "refactor: A code change that neither fixes a bug nor adds a feature"
+    },
+    {
+      value: "perf",
+      name: "perf:     A code change that improves performance"
+    },
+    {
+      value: "test",
+      name: "test:     Add missing tests or correcting existing tests"
+    },
+    {
+      value: "build",
+      name: "build:    Add missing tests or correcting existing tests"
+    },
+    {
+      value: "revert",
+      name: "revert:   Revert to a commit"
+    }
+  ],
+  allowBreakingChanges: ["feat", "fix", "refactor", "perf", "build", "revert"]
+};
+```
+
+## 参考链接
+
+- [从 Commit 规范化到发布自定义 CHANGELOG 模版](https://juejin.im/post/6844903888072654856#heading-3)
+- [优雅的提交你的 Git Commit Message](https://juejin.im/post/6844903606815064077#heading-3)
