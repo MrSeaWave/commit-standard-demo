@@ -62,11 +62,20 @@
 - 为 `Code Review`（代码审查）做准备
 - 方便跟踪工程历史
 
+### 第一步 替代 git commit
 ```bash
-$ yarn add commitizen cz-conventional-changelog -D
+// [推荐全局安装] commitizen 为我们提供一些 cli 命令
+// 比如：commitizen init、 git cz
+
+$ yarn add --global commitizen  -D
 ```
 
-- `commitizen/cz-cli`: 我们需要借助它提供的 `git cz` 命令替代我们的 `git commit` 命令, 帮助我们生成符合规范的 `commit message`.
+- `commitizen`: 我们需要借助它提供的 `git cz` 命令替代我们的 `git commit` 命令, 帮助我们生成符合规范的 `commit message`.
+
+```bash
+
+$ yarn add cz-conventional-changelog -D
+```
 - `cz-conventional-changelog`:为`commitizen` 指定一个 `Adapter`，使得 `commitizen` 按照我们指定的规范帮助我们生成 `commit message`.
 
 配置`package.json`
@@ -83,6 +92,18 @@ $ yarn add commitizen cz-conventional-changelog -D
   }
 }
 ```
+
+**使用**
+依赖安装完就可以开始秀操作了
+
+要先 `git add .` 将文件加入本地暂存区后，才能 `commit`
+```bash
+// 如果全局安装 commitizen
+$ git cz
+// 如果安装在本地 commitizen
+$ npm run commit
+```
+> 注意，如果之前通过 git commit 这种方式提交代码，都要改为 git-cz
 
 **自定义 adapter**
 
