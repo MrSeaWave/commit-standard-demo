@@ -1,2 +1,2 @@
 // echo "foo: some message"
-var a=1222
+var a=1222232
