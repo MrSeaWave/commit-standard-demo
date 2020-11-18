@@ -1,0 +1,1 @@
+// echo "foo: some message"
