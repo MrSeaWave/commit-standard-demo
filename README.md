@@ -68,7 +68,7 @@
 // [推荐全局安装] commitizen 为我们提供一些 cli 命令
 // 比如：commitizen init、 git cz
 
-$ yarn add --global commitizen  -D
+$ yarn global add commitizen  -D
 ```
 
 - `commitizen`: 我们需要借助它提供的 `git cz` 命令替代我们的 `git commit` 命令, 帮助我们生成符合规范的 `commit message`.
@@ -170,6 +170,67 @@ module.exports = {
   ],
   allowBreakingChanges: ["feat", "fix", "refactor", "perf", "build", "revert"]
 };
+```
+
+### 第二步：校验 commit
+
+`commitlint` 帮我们规范 `commit message`（`commitlint`的实现方式和`commitizen`差不多也需要个 `adapter`）
+
+- `@commitlint/cli` 【命令行工具】
+- `@commitlint/config-conventional` 【校验规则】符合 Angular 团队规范（不同于代码规范），当然还有其它规范。
+
+```bash
+// [推荐局部安装]
+$ yarn add @commitlint/config-conventional @commitlint/cli -D
+```
+
+在`package.json`配置
+
+```json
+{
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  }
+}
+```
+
+也可以，在根目录下使用配置文件： `.commitlintrc.js`
+
+```js
+module.exports = {
+  extends: ["@commitlint/config-conventional"]
+};
+```
+
+**针对自定义的 Adapter 进行 Lint**
+
+如果是使用`cz-customizable`适配器做了破坏 `Angular` 风格的提交说明配置，那么不能使用`@commitlint/config-conventional`规则进行提交说明校验，可以使用`commitlint-config-cz` 对定制化提交说明进行校验。
+
+```bash
+yarn add commitlint-config-cz @commitlint/cli -D
+```
+
+此时的 `.commitlintrc.js` 文件：
+
+```js
+module.exports = {
+  extends: ["cz"]
+};
+```
+
+### 第三步: Husky
+
+配置 `package.json`
+
+```json
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -e $GIT_PARAMS"
+    }
+  }
+}
 ```
 
 ## 参考链接
